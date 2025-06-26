@@ -1,8 +1,16 @@
+import "bmfFonts"
+
+fontMedium = bmfFonts.Font.load("/sys/fonts/minimicro-pro-16.bmf")
+
+CalculateWidth = function(text)
+	return fontMedium.width(text) + 18
+end function
+
 Object = {}
 Object.x = 0
 Object.y = 0
-Object.width = 0
 Object.lineWidth = 4
+Object.width = 0
 Object.height = 0
 Object.color = color.white
 
@@ -19,25 +27,33 @@ Object.draw = function(filled=1,obj=null)
 	if filled then
 		gfx.fillRect(self.x,self.y,self.width,self.height,self.color)
 	else
-		gfx.drawRect(self.x,self.y,self.width,self.height,self.color, self.lineWidth)
+		gfx.drawRect(self.x,self.y,self.width,self.height,self.color,self.lineWidth)
 	end if
 end function
 
 Button = {"__isa":Object}
 Button.visible = true
 Button.draw = function(filled=1)
+	self.width = CalculateWidth(self.text)
+	size = CalculateWidth("0")
+	self.height = size
+	
 	if self.visible then
 		Object.draw(filled,self)
-		gfx.print(self.text,self.x,self.y+(self.height/4),self.textcolor)
+		fontMedium.print(self.text, self.x + size * 0.3, self.y + size * 0.3, 1, self.textcolor)
 	end if
 end function
 
 Label = {"__isa":Object}
 Label.visible = true
 Label.draw = function(filled=1)
+	self.width = CalculateWidth(self.text)
+	size = CalculateWidth("0")
+	self.height = size
+	
 	if self.visible then
 		Object.draw(filled,self)
-		gfx.print(self.text,self.x,self.y+(self.height/4),self.textcolor)
+		fontMedium.print(self.text, self.x + size * 0.3, self.y + size * 0.3, 1, self.textcolor)
 	end if
 end function
 
@@ -51,9 +67,13 @@ Textbox.visible = true
 Textbox.textcolor = color.white
 
 Textbox.draw = function(filled=1)
+	self.width = CalculateWidth(self.text)
+	size = CalculateWidth("0")
+	self.height = size
+	
 	if self.visible then
 		Object.draw(filled,self)
-		gfx.print(self.text,self.x,self.y+(self.height/4),self.textcolor)
+		fontMedium.print(self.text, self.x + size * 0.3, self.y + size * 0.3, 1, self.textcolor)
 	end if
 end function
 
